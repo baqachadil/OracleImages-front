@@ -28,26 +28,27 @@ export class ListProdsComponent implements OnInit {
 
   ngOnInit() {
 
-    this.imageserv.getImages().then((res) => {
+    console.log("hii")
+    this.imageserv.getImages().subscribe(res => {
       this.images = res
-      this.dataSource.data = res
-
-      this.dataSource.paginator = this.paginator;
-      this.dataSource.sort = this.sort;
-      this.dataSource.filterPredicate = 
-      (data, filtersJson: string) => {
-      const matchFilter = [];
-      const filters = JSON.parse(filtersJson);
-
-      filters.forEach(filter => {
-        const val = data[filter.id] === null ? '' : data[filter.id];
-        matchFilter.push(val.toLowerCase().includes(filter.value.toLowerCase()));
-      });
-        return matchFilter.every(Boolean);
-    };
-    },err => {
+      //this.dataSource = new MatTableDataSource(this.images)
+    },err=>{
       console.log(err)
     })        
+
+    // this.dataSource.paginator = this.paginator;
+    //   this.dataSource.sort = this.sort;
+    //   this.dataSource.filterPredicate = 
+    //   (data, filtersJson: string) => {
+    //   const matchFilter = [];
+    //   const filters = JSON.parse(filtersJson);
+
+    //   filters.forEach(filter => {
+    //     const val = data[filter.id] === null ? '' : data[filter.id];
+    //     matchFilter.push(val.toLowerCase().includes(filter.value.toLowerCase()));
+    //   });
+    //     return matchFilter.every(Boolean);
+    // };
    }
 
    applyFilter(filterValue: string) {
@@ -120,18 +121,18 @@ export class ListProdsComponent implements OnInit {
     }    
   }
 
-  //  onSubmitAd(t){
-  //   this.modalService.dismissAll()
-  //    this.imageserv.addImage(this.selectedImg, t.value).subscribe(res=>{
-  //     Swal.fire(
-  //       'Ajouté!',
-  //       'L\'image a été ajouté avec succès',
-  //       'success'
-  //     ) 
+   onSubmitAd(t){
+    this.modalService.dismissAll()
+     this.imageserv.addImage(this.selectedImg, t.value).subscribe(res=>{
+      Swal.fire(
+        'Ajouté!',
+        'L\'image a été ajouté avec succès',
+        'success'
+      ) 
   
-  //     window.location.reload()
-  //    })    
-  // }
+      window.location.reload()
+     })    
+  }
 
 
 }

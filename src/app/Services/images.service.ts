@@ -10,11 +10,9 @@ export class ImagesService {
   serverApi = "http://localhost:8080/"
   constructor(private http: HttpClient) { }
 
-  public async getImages(){
-    let res
-    const req = new HttpRequest('GET', this.serverApi);
-    res=await this.http.request(req).toPromise()
-    return res
+  public getImages(){
+    const req = new HttpRequest('GET', this.serverApi+"images");
+    return this.http.request(req)
   }
 
   public deleteImage(id){
@@ -28,8 +26,11 @@ export class ImagesService {
     return res
   }
 
-  public recherche(comp){
-    return this.http.post(this.serverApi+"recherche", comp)
+  public async recherche(comp){
+    let res
+    const req = new HttpRequest('POST', this.serverApi+'recherche', comp);
+    res=await this.http.request(req).toPromise()
+    return res
   }
 
 
