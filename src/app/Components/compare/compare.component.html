@@ -1,8 +1,6 @@
 <div class="container" style="margin-top: 5%;">
     <div class="card">
-        <div class="card-header">
-            <h3>Choisir deux images pour comparer</h3> 
-        </div>
+        
         <div class="card-body">
             <div class="row">
                 <div class="col-md-6">
@@ -26,10 +24,10 @@
                 </div>
             </div> 
             <div class="row">
-                <button style="margin: auto;" class="form-control btn btn-primary">Comparer</button>
+                <button (click)="comparer(color, text, shape)" style="margin: auto;" class="form-control btn btn-primary">Comparer</button>
             </div>
             <div class="row">
-                <h2 style="margin: auto;">Score : 0</h2>
+                <h3 style="margin: auto;">Score : <span *ngIf="loading"><img style="width: 60px; height: 60px;"  src="../../../assets/images/Spinner-1s-200px.gif"></span> <span *ngIf="!loading" style="color: blueviolet;">{{score}}</span> </h3>
             </div>           
         </div>        
     </div>

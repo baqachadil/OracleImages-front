@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import Swal from 'sweetalert2';
+import { ImagesService } from 'src/app/Services/images.service';
 
 @Component({
   selector: 'app-compare',
@@ -13,7 +14,9 @@ export class CompareComponent implements OnInit {
 
   selectedImg1
   selectedImg2
-  constructor() { }
+  score
+  loading = false
+  constructor(private imageService: ImagesService) { }
 
   ngOnInit() {
   }
@@ -60,6 +63,27 @@ export class CompareComponent implements OnInit {
       this.imgUrl2 = reader.result; 
     }
     }    
+  }
+
+  comparer(c, t, s){
+    this.loading = true
+    let color = 0
+    let texte = 0
+    let shape = 0
+    if (c.value == true) color =1
+    if (t.value == true) texte =1
+    if (s.value == true) shape =1
+
+    let text = "color=" + color + " texture=" + texte + " shape=" + shape;
+    let data = new FormData()
+    data.append('file1', this.selectedImg1)
+    data.append('file2', this.selectedImg2)
+    data.append('commande', text)
+    
+    this.imageService.compare(data).then((res)=>{      
+      this.score = res["body"]
+      this.loading=false
+    })
   }
 
 }

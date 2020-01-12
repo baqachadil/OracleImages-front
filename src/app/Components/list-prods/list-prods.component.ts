@@ -17,7 +17,7 @@ export class ListProdsComponent implements OnInit {
   @ViewChild(MatPaginator,{static: false}) paginator: MatPaginator;
   @ViewChild(MatSort,{static: false}) sort: MatSort; 
 
-  displayedColumns: string[] = ['id', 'image', 'titre' , 'actions'];
+  displayedColumns: string[] = ['id', 'path', 'titre' , 'actions'];
   dataSource : MatTableDataSource<any>
 
   images
@@ -27,17 +27,10 @@ export class ListProdsComponent implements OnInit {
   constructor(private imageserv:ImagesService, private modalService: NgbModal) { }
 
   ngOnInit() {
-    // this.images = [
-    //   {id: 1, image: "../assets/images/IMG-4567-JPG-boku-no-hero-academia-40005018-1427-1406.jpg", titre: "Image1", actions: 1},
-    //   {id: 2, image: "../assets/images/attack_on_titan_eren_jaeger_by_marrilliams-d7dl7hp.jpg", titre: "Image2", actions: 1},
-    //   {id: 3, image: "../assets/images/monkey_d__luffy_render_by_annaeditions24-d6hci7j.png", titre: "Image3", actions: 1},
-    //   {id: 4, image: "../assets/images/220px-Robida_-_Alibaba_couverture.jpg", titre: "Image4", actions: 1}
-    // ]
 
-    this.imageserv.getImages().subscribe(res => {
-      console.log(res)
+    this.imageserv.getImages().then((res) => {
       this.images = res
-      this.dataSource = new MatTableDataSource<any>(this.images)
+      this.dataSource.data = res
 
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
@@ -68,7 +61,7 @@ export class ListProdsComponent implements OnInit {
     if (this.dataSource.paginator) {
       this.dataSource.paginator.firstPage();
     }     
-  } 
+  }
 
   showInfos(content, i){
       this.currentImage = this.images[i]
@@ -86,11 +79,17 @@ export class ListProdsComponent implements OnInit {
         confirmButtonText: 'Yes, delete it!'
       }).then((result) => {
         if (result.value) {
-          Swal.fire(
-            'Deleted!',
-            'Your file has been deleted.',
-            'success'
-          )
+          this.imageserv.deleteImage(this.images[i].id).subscribe(res=>{
+            this.dataSource.data.splice(i, 1);
+            this.dataSource._updateChangeSubscription();
+            Swal.fire(
+              'Deleted!',
+              'Your file has been deleted.',
+              'success'
+            )
+          }, err=>{
+            console.log(err)
+          })          
         }
       })
   }
@@ -120,27 +119,19 @@ export class ListProdsComponent implements OnInit {
     }
     }    
   }
-    
 
-  onSubmitAd(t){
-
-    let test = (<HTMLInputElement> document.getElementById('filePath')).value
-    console.log(test)
-
-  //   let image : FormData
-  //   image = new FormData()
-  //   image.set('titre', t.value)
-  //   image.set('path', this.selectedImg)
-  //   this.imageserv.addImage(image).subscribe(res=>{
-  //     console.log(res)
+  //  onSubmitAd(t){
+  //   this.modalService.dismissAll()
+  //    this.imageserv.addImage(this.selectedImg, t.value).subscribe(res=>{
   //     Swal.fire(
   //       'Ajouté!',
   //       'L\'image a été ajouté avec succès',
   //       'success'
-  //     )
-  //   },err=>{
-  //     console.log(err)
-  //   })
-   }
+  //     ) 
+  
+  //     window.location.reload()
+  //    })    
+  // }
+
 
 }
