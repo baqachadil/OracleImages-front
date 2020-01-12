@@ -1,0 +1,36 @@
+<div class="container" style="margin-top: 5%;">
+    <div class="card">
+        <div class="card-header">
+            <h3>Choisir deux images pour comparer</h3> 
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-6">
+                    <img  [src]="imgUrl1" class="" style="width: 60%; height:300px; margin-left: 20%;">
+                    <input style="margin-top: 1%;" (change)="setimg1($event)" type="file" #image="ngModel" name="image" class="form-control" ngModel required>                        
+                </div>
+                <div class="col-md-6">
+                    <img  [src]="imgUrl2" class="" style="width: 60%; height:300px; margin-left: 20%;">
+                    <input style="margin-top: 1%;" (change)="setimg2($event)" type="file" #image="ngModel" name="image" class="form-control" ngModel required>                        
+                </div>
+            </div>
+            <div class="row" style="width: 70%; margin: auto; margin-top: 2%;">
+                <div class="col-md-4">
+                    <label class="toggle"><input class="toggle__input" #color="ngModel" type="checkbox" name="color" ngModel><span class="toggle__label"><span class="toggle__text">Couleur</span></span></label>                    
+                </div>
+                <div class="col-md-4">
+                    <label class="toggle"><input class="toggle__input" #text="ngModel" type="checkbox" name="text" ngModel><span class="toggle__label"><span class="toggle__text">Texture</span></span></label>
+                </div>
+                <div class="col-md-4">
+                    <label class="toggle"><input class="toggle__input" #shape="ngModel" type="checkbox" name="shape" ngModel><span class="toggle__label"><span class="toggle__text">Format</span></span></label>
+                </div>
+            </div> 
+            <div class="row">
+                <button style="margin: auto;" class="form-control btn btn-primary">Comparer</button>
+            </div>
+            <div class="row">
+                <h2 style="margin: auto;">Score : 0</h2>
+            </div>           
+        </div>        
+    </div>
+</div>

@@ -1,0 +1,86 @@
+<button (click)="addImage(newImage)" style="margin-top: 5%; margin-left: 87%; width: 10%" class="btn btn-primary">Add image</button>
+
+<div style="margin: auto; margin-top: 1%; width: 70%;">
+    <mat-form-field style="width: 100%;">
+        <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
+    </mat-form-field>
+</div>
+  
+  <table style="margin: auto; margin-top: 1%; width: 70%;" mat-table [dataSource]="dataSource" class=" mat-elevation-z8" matSort>
+    
+    <ng-container matColumnDef="id">
+        <th style="width: 10%" mat-header-cell *matHeaderCellDef mat-sort-header> Id </th>
+        <td style="width: 10%"  mat-cell *matCellDef="let element"> {{element.id}} </td>
+    </ng-container>
+   
+    <ng-container matColumnDef="image">
+      <th style="width: 20%;" mat-header-cell *matHeaderCellDef> Image </th>
+      <td style="width: 20%;"  mat-cell *matCellDef="let element;let j=index"> <img [src]="element.image" (click)="showInfos(content, j)" style="cursor: pointer; width: 20%; height: 20%;"> </td>
+    </ng-container>
+  
+    
+    <ng-container matColumnDef="titre">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Titre </th>
+      <td  mat-cell *matCellDef="let element"> {{element.titre}} </td>
+    </ng-container>
+    
+    <ng-container matColumnDef="actions">
+      <th style="width: 170px" mat-header-cell *matHeaderCellDef> Actions </th>
+      <td  style="width: 170px" mat-cell *matCellDef="let element;let i=index">
+            <button  class="action" style="margin-left:5px;" mat-mini-fab (click)="showInfos(content, i)" color="primary" ><mat-icon>info</mat-icon></button>
+            <button  class="action" style="margin-left: 5px;" mat-mini-fab (click)="delete(i)" color="primary" ><mat-icon>delete</mat-icon></button>            
+      </td>              
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  </table>
+
+  <mat-paginator  style="margin: auto;width: 70%" [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
+
+
+
+
+
+  <ng-template #content let-modal>
+    <div class="modal-header">
+        <h4 class="modal-title">{{currentImage.titre}}</h4>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+                <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <img [src]="currentImage.image" style="border-radius: 1; width: 100%; height: 500px;">
+    </div>        
+</ng-template>
+
+<ng-template #newImage let-modal>
+    <div class="modal-header">
+        <h4 class="modal-title">Ajouter une image</h4>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+                <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <form  #f="ngForm" (ngSubmit)="onSubmitAd(titre)">
+            <img  [src]="imgUrl" class="" style="width: 30%; height:200px; margin-left: 35%">
+            <label for="inp" class="inp">
+                <input (change)="setimg($event)" id="filePath" type="file" #image name="image" class="" >                        
+                <span class="label">Image</span>
+                <span class="border"></span>
+            </label>
+            <!-- <p style="color: red" *ngIf="image.touched && image.errors?.required">
+                This field is required !!!
+            </p> -->
+            <label for="inp" class="inp ">
+                <input type="text" #titre="ngModel" name="titre" class="" placeholder="&nbsp;" ngModel required>                        
+                <span class="label">Titre</span>
+                <span class="border"></span>
+            </label>
+            <p style="color: red" *ngIf="titre.touched && titre.errors?.required">
+                This field is required !!!
+            </p>    
+            <input style="margin-top: 1%;" class=" form-control btn btn-primary" [disabled]="f.invalid"   type="submit" value="Add">                       
+        </form>
+    </div>        
+</ng-template>

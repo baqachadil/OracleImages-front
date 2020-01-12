@@ -1,0 +1,22 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+    <a class="navbar-brand" routerLink="/images">ImagesOracle</a>
+    <button (click)="collap()" class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+  
+    <div [class.show]="coll" class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav mr-auto">  
+        <li class="nav-item">
+            <a class="nav-link" routerLink="/images" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Home</a>
+        </li>  
+
+        <li class="nav-item">
+            <a class="nav-link" routerLink="/comparer" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Comparer</a>
+        </li>  
+
+        <li class="nav-item">
+            <a class="nav-link" routerLink="/recherche" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Rechercher</a>
+        </li>         
+      </ul>
+    </div>
+  </nav>
