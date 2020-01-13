@@ -11,8 +11,7 @@ export class ImagesService {
   constructor(private http: HttpClient) { }
 
   public getImages(){
-    const req = new HttpRequest('GET', this.serverApi+"images");
-    return this.http.request(req)
+    return this.http.get(this.serverApi+"images");
   }
 
   public deleteImage(id){

@@ -1,8 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { trigger, transition, style, animate } from '@angular/animations';
 import { MatTableDataSource, MatPaginator, MatSort } from '@angular/material';
-import { FormGroup, FormControl } from '@angular/forms';
-import { DomSanitizer } from '@angular/platform-browser';
 import { ImagesService } from 'src/app/Services/images.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import Swal from 'sweetalert2';
@@ -28,27 +25,26 @@ export class ListProdsComponent implements OnInit {
 
   ngOnInit() {
 
-    console.log("hii")
     this.imageserv.getImages().subscribe(res => {
+      console.log(res)
       this.images = res
-      //this.dataSource = new MatTableDataSource(this.images)
+      this.dataSource = new MatTableDataSource(this.images)
+      this.dataSource.paginator = this.paginator;
+      this.dataSource.sort = this.sort;
+      this.dataSource.filterPredicate = 
+      (data, filtersJson: string) => {
+      const matchFilter = [];
+      const filters = JSON.parse(filtersJson);
+
+      filters.forEach(filter => {
+        const val = data[filter.id] === null ? '' : data[filter.id];
+        matchFilter.push(val.toLowerCase().includes(filter.value.toLowerCase()));
+      });
+        return matchFilter.every(Boolean);
+    };
     },err=>{
       console.log(err)
-    })        
-
-    // this.dataSource.paginator = this.paginator;
-    //   this.dataSource.sort = this.sort;
-    //   this.dataSource.filterPredicate = 
-    //   (data, filtersJson: string) => {
-    //   const matchFilter = [];
-    //   const filters = JSON.parse(filtersJson);
-
-    //   filters.forEach(filter => {
-    //     const val = data[filter.id] === null ? '' : data[filter.id];
-    //     matchFilter.push(val.toLowerCase().includes(filter.value.toLowerCase()));
-    //   });
-    //     return matchFilter.every(Boolean);
-    // };
+    })            
    }
 
    applyFilter(filterValue: string) {
